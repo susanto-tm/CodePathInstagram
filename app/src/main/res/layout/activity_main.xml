@@ -56,12 +56,12 @@
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent">
 
-                <FrameLayout
+                <androidx.fragment.app.FragmentContainerView
                     android:id="@+id/mainFragmentContainer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                </FrameLayout>
+                </androidx.fragment.app.FragmentContainerView>
 
                 <com.google.android.material.bottomnavigation.BottomNavigationView
                     android:id="@+id/bottom_navigation"
