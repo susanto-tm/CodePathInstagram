@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/feedFragBtn"
+        android:enabled="true"
+        android:icon="@drawable/feed_frag_btn_selector"
+        android:title=""
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/postFragBtn"
+        android:enabled="true"
+        android:icon="@drawable/post_frag_btn_selector"
+        android:title=""
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/userFragBtn"
+        android:enabled="true"
+        android:icon="@drawable/logout_frag_btn_selector"
+        android:title=""
+        app:showAsAction="ifRoom"/>
+</menu>
