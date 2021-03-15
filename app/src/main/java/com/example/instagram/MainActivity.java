@@ -1,32 +1,51 @@
 package com.example.instagram;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.FileProvider;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.ImageView;
 
 import com.example.instagram.databinding.ActivityMainBinding;
+import com.example.instagram.databinding.PostFragmentBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.snackbar.Snackbar;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 
+import java.io.File;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     ActivityMainBinding binding;
     public static final String TAG = "MainActivity";
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+
+        toolbar = binding.toolbar;
+
+        setSupportActionBar(toolbar);
+
         final FragmentManager fragmentManager = getSupportFragmentManager();
 
         final Fragment feedFragment = new FeedFragment();
@@ -40,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                Fragment fragment = null;
+                Fragment fragment;
                 switch (item.getItemId()) {
                     case R.id.feedFragBtn:
                         // do something here
@@ -59,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
-        bottomNavigationView.setSelectedItemId(R.id.postFragBtn);
+        bottomNavigationView.setSelectedItemId(R.id.feedFragBtn);
     }
 
     private void queryPosts() {
@@ -80,6 +99,5 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
 
 }

@@ -59,7 +59,6 @@ public class LoginActivity extends AppCompatActivity {
                     return;
                 }
                 gotoMainActivity();
-                Toast.makeText(LoginActivity.this, "Success!", Toast.LENGTH_SHORT).show();
             }
         });
     }

@@ -42,6 +42,7 @@ public class LogoutFragment extends Fragment {
                     public void done(ParseException e) {
                         if (e != null) {
                             Toast.makeText(context, "Unable to logout", Toast.LENGTH_SHORT).show();
+                            return;
                         }
                         Log.i(MainActivity.TAG, "Logging out: " + ParseUser.getCurrentUser());
                         Intent intent = new Intent(context, LoginActivity.class);

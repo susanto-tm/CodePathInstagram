@@ -5,8 +5,11 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,26 +18,27 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.FileProvider;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
 import com.example.instagram.databinding.PostFragmentBinding;
-import com.parse.FindCallback;
+import com.google.android.material.snackbar.Snackbar;
 import com.parse.ParseException;
 import com.parse.ParseFile;
-import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
-import java.util.List;
 
 public class PostFragment extends Fragment {
     private final String TAG = "PostFragment";
@@ -49,6 +53,14 @@ public class PostFragment extends Fragment {
     private String photoFileName = "photo.jpg";
     private Context context;
 
+    private Snackbar snackbarError;
+    private Snackbar snackbarDescription;
+    private Snackbar snackbarSubmitted;
+
+    private CoordinatorLayout mainCoordinatorLayout;
+
+    private ProgressBar prgBar;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -58,6 +70,13 @@ public class PostFragment extends Fragment {
         btnTakePicture = binding.btnTakePicture;
         ivPostImage = binding.ivPostImage;
         btnSubmit = binding.btnSubmit;
+        prgBar = binding.submitProgress;
+
+        mainCoordinatorLayout = getActivity().findViewById(R.id.mainCoordinatorLayout);
+
+        snackbarError = Snackbar.make(mainCoordinatorLayout, "Description can't be empty", Snackbar.LENGTH_SHORT);
+        snackbarDescription = Snackbar.make(mainCoordinatorLayout, "There is no image", Snackbar.LENGTH_SHORT);
+        snackbarSubmitted = Snackbar.make(mainCoordinatorLayout, "Post uploaded", Snackbar.LENGTH_SHORT);
 
         btnTakePicture.setOnClickListener(new View.OnClickListener() {
 
@@ -73,11 +92,11 @@ public class PostFragment extends Fragment {
             public void onClick(View v) {
                 String caption = etCaption.getText().toString();
                 if (caption.isEmpty()) {
-                    Toast.makeText(context, "Description can't be empty", Toast.LENGTH_SHORT).show();
+                    snackbarError.show();
                     return;
                 }
                 if (photoFile == null || ivPostImage.getDrawable() == null) {
-                    Toast.makeText(context, "There is no image!", Toast.LENGTH_SHORT).show();
+                    snackbarDescription.show();
                     return;
                 }
                 ParseUser currentUser = ParseUser.getCurrentUser();
@@ -85,6 +104,7 @@ public class PostFragment extends Fragment {
             }
         });
 
+        launchCamera();
 
         return binding.getRoot();
     }
@@ -120,8 +140,6 @@ public class PostFragment extends Fragment {
                 // RESIZE BITMAP, see section below
                 // Load the taken image into a preview
                 ivPostImage.setImageBitmap(takenImage);
-            } else { // Result was a failure
-                Toast.makeText(context, "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -143,7 +161,30 @@ public class PostFragment extends Fragment {
         post.setDescription(caption);
         post.setImage(new ParseFile(photoFile));
         post.setUser(currentUser);
+        prgBar.setVisibility(View.VISIBLE);
+
+        Runnable prgRun = new Runnable() {
+
+            @Override
+            public void run() {
+                for (int i = 0; i < 100; i++) {
+                    waitPrg();
+                    final int prg = i;
+                    prgBar.post(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            prgBar.setProgress(prg);
+                        }
+                    });
+                }
+            }
+        };
+        Thread prgThread = new Thread(prgRun);
+        prgThread.start();
+
         post.saveInBackground(new SaveCallback() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void done(ParseException e) {
                 if (e != null) {
@@ -151,6 +192,10 @@ public class PostFragment extends Fragment {
                     Toast.makeText(context, "Error while saving!", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                prgThread.interrupt();
+                prgBar.setProgress(prgBar.getMax(), false);
+                prgBar.setVisibility(View.GONE);
+                snackbarSubmitted.show();
                 Log.i(TAG, "Success!");
                 etCaption.setText("");
                 ivPostImage.setImageResource(0);
@@ -158,4 +203,7 @@ public class PostFragment extends Fragment {
         });
     }
 
+    private void waitPrg() {
+        SystemClock.sleep(10);
+    }
 }

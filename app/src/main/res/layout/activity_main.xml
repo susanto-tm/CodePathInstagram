@@ -1,84 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-    <RelativeLayout
-        android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
+
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/mainCoordinatorLayout"
         android:layout_width="match_parent"
-        android:orientation="vertical">
-        <FrameLayout
-            android:id="@+id/mainFragmentContainer"
+        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+        <LinearLayout
             android:layout_height="match_parent"
-            android:layout_width="match_parent">
-
-        </FrameLayout>
-
-
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/bottom_navigation"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            app:menu="@menu/menu_bottom_navigation"
-            app:labelVisibilityMode="unlabeled"
-            app:itemIconTint="@color/black" />
+            android:orientation="vertical">
 
-<!--        <androidx.viewpager2.widget.ViewPager2-->
-<!--            android:id="@+id/container"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="643dp" />-->
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:clipToPadding="false"
+                android:minHeight="?attr/actionBarSize"
+                app:titleTextColor="@android:color/black">
 
-<!--        <LinearLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:gravity="center_horizontal|center_vertical"-->
-<!--            android:orientation="horizontal">-->
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
 
-<!--            <LinearLayout-->
-<!--                android:layout_width="@dimen/main_icon_bar"-->
-<!--                android:layout_height="@dimen/main_icon_bar"-->
-<!--                android:id="@+id/feedFragBtnContainer">-->
+                    <ImageView
+                        android:id="@+id/toolbarLogo"
+                        android:layout_width="120dp"
+                        android:layout_height="60dp"
+                        android:cropToPadding="false"
+                        app:color="@color/black"
+                        app:srcCompat="@drawable/nav_logo_whiteout" />
 
-<!--                <ImageButton-->
-<!--                    android:id="@+id/btnFeedFrag"-->
-<!--                    style="@style/Widget.AppCompat.Button"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="match_parent"-->
-<!--                    android:background="@drawable/instagram_home_filled_24"-->
-<!--                    app:backgroundTint="@color/black" />-->
-<!--            </LinearLayout>-->
+                    <Button
+                        android:id="@+id/btnInboxToolbar"
+                        style="@style/Widget.MaterialComponents.Button"
+                        android:layout_width="23dp"
+                        android:layout_height="23dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:background="@drawable/nav_inbox_paper_plane"
+                        android:gravity="center_vertical"
+                        app:backgroundTint="@color/black" />
 
-<!--            <LinearLayout-->
-<!--                android:id="@+id/postFragBtnContainer"-->
-<!--                android:layout_width="@dimen/main_icon_bar"-->
-<!--                android:layout_height="@dimen/main_icon_bar"-->
-<!--                android:layout_marginStart="70dp"-->
-<!--                android:layout_marginEnd="70dp">-->
+                </RelativeLayout>
 
-<!--                <ImageButton-->
-<!--                    android:id="@+id/btnPostFrag"-->
-<!--                    style="@style/Widget.AppCompat.Button"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="match_parent"-->
-<!--                    android:layout_weight="1"-->
-<!--                    android:background="@drawable/instagram_new_post_filled_24" />-->
-<!--            </LinearLayout>-->
+            </androidx.appcompat.widget.Toolbar>
 
-<!--            <LinearLayout-->
-<!--                android:layout_width="@dimen/main_icon_bar"-->
-<!--                android:layout_height="@dimen/main_icon_bar"-->
-<!--                android:id="@+id/logoutFragBtnContainer">-->
+            <RelativeLayout
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent">
 
-<!--                <ImageButton-->
-<!--                    android:id="@+id/btnLogoutFrag"-->
-<!--                    style="@style/Widget.AppCompat.Button"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="match_parent"-->
-<!--                    android:background="@drawable/instagram_user_filled_24"-->
-<!--                    app:backgroundTint="@color/black" />-->
-<!--            </LinearLayout>-->
+                <FrameLayout
+                    android:id="@+id/mainFragmentContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-<!--        </LinearLayout>-->
+                </FrameLayout>
 
-    </RelativeLayout>
+                <com.google.android.material.bottomnavigation.BottomNavigationView
+                    android:id="@+id/bottom_navigation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    app:menu="@menu/menu_bottom_navigation"
+                    app:labelVisibilityMode="unlabeled"
+                    app:itemIconTint="@color/black" />
+            </RelativeLayout>
+
+        </LinearLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
