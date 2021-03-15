@@ -14,7 +14,7 @@
         android:title=""
         app:showAsAction="ifRoom"/>
     <item
-        android:id="@+id/userFragBtn"
+        android:id="@+id/logoutFragBtn"
         android:enabled="true"
         android:icon="@drawable/logout_frag_btn_selector"
         android:title=""
