@@ -1,35 +1,17 @@
 package com.example.instagram;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.FileProvider;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
-import android.util.Log;
 import android.view.MenuItem;
-import android.widget.ImageView;
 
 import com.example.instagram.databinding.ActivityMainBinding;
-import com.example.instagram.databinding.PostFragmentBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.snackbar.Snackbar;
-import com.parse.FindCallback;
-import com.parse.ParseException;
-import com.parse.ParseQuery;
-
-import java.io.File;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -50,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
         final Fragment feedFragment = new FeedFragment();
         final Fragment postFragment = new PostFragment();
-        final Fragment logoutFragment = new LogoutFragment();
+        final Fragment logoutFragment = new UserFragment();
 
 //        queryPosts();
 
@@ -79,25 +61,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         bottomNavigationView.setSelectedItemId(R.id.feedFragBtn);
-    }
-
-    private void queryPosts() {
-        ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
-
-        query.include(Post.KEY_USER);
-
-        query.findInBackground(new FindCallback<Post>() {
-            @Override
-            public void done(List<Post> posts, ParseException e) {
-                if (e != null) {
-                    Log.e(TAG, "Issue with getting posts:", e);
-                    return;
-                }
-                for (Post post : posts) {
-                    Log.i(TAG, "Posts: " + post.getDescription() + " username: " + post.getUser().getUsername());
-                }
-            }
-        });
     }
 
 }
